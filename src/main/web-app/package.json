@@ -1,0 +1,33 @@
+{
+  "name": "ContrastSecurityWebApp",
+  "version": "0.0.1",
+  "description": "A way to visualize vehicle's miles per gallon over time.",
+  "author": "Justin Leo <jleo32@terpmail.umd.edu>",
+  "contributors": [{
+    "name": "Justin Leo",
+    "email": "jleo32@terpmail.umd.edu"
+  }],
+  "bin": {
+    "module-name": "./bin/module-name"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/------"
+  },
+  "engines": {
+    "node": ">=5.3.0"
+  },
+  "dependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.11.2",
+    "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-uglify": "~0.9.1",
+    "grunt-contrib-clean": "~0.6.0",
+    "load-grunt-tasks": "~0.4.0",
+    "express": "~4.13.1",
+    "path": "~0.11.14"
+  },
+  "preferGlobal": true,
+  "private": true
+}
