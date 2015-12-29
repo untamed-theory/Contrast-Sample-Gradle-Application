@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('VehicleController', function ($scope, vehicle) {
+angular.module('VehicleMPG').controller('VehicleController', function ($scope, vehicle) {
     var self = this;
     self.vehicles = [];
 
@@ -11,7 +11,7 @@ app.controller('VehicleController', function ($scope, vehicle) {
                     self.vehicles = data;
                 },
                 function (errResponse) {
-                    console.error('Error while fetching Currencies');
+                    console.error('Error while fetching vehicles');
                 }
             );
     };

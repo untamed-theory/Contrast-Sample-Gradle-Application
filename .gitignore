@@ -28,8 +28,8 @@
 .idea_modules/
 
 ## Web App
-src/main/web-app/node_modules/*
-src/main/web-app/bower_components/*
+src/main/webapp/node_modules/*
+src/main/webapp/bower_components/*
 
 ## Data
 data/*

@@ -1,6 +1,6 @@
 'use strict';
 
-app.service('vehicle', function ($http, $q) {
+angular.module('VehicleMPG').service('vehicle', function ($http, $q) {
 
     return {
 

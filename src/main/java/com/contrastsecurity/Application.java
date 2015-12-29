@@ -1,12 +1,20 @@
 package com.contrastsecurity;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
 
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
-
+        SpringApplication.run(Application.class, args);
     }
 }
