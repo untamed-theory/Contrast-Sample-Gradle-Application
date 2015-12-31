@@ -1,20 +1,13 @@
 package com.contrastsecurity;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.boot.SpringApplication;
 
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-
-@RestController
 @SpringBootApplication
+@EnableMongoRepositories(basePackages = "com.contrastsecurity.repositories")
 public class Application {
-
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(new Class[] {Application.class, AppInitializer.class }, args);
     }
 }

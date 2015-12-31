@@ -1,21 +1,19 @@
 package com.contrastsecurity.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "vehicles")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Document(collection = "vehicle")
 public class Vehicle {
 
     @Id
     private String id;
 
-    @Field("highway08")
     private int highwayMPG;
-    @Field("city08")
     private int cityMPG;
-    @Field("comb08")
     private int averageMPG;
 
     private String make;
@@ -23,8 +21,7 @@ public class Vehicle {
     private int year;
 
     private int cylinders;
-    @Field("displ")
-    private int displacement;
+    private float displ;
 
     private String fuelType;
 
@@ -32,9 +29,9 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    @PersistenceConstructor
+    // @PersistenceConstructor
     public Vehicle(int highwayMPG, int cityMPG, int averageMPG, String make, String model, int year, int cylinders,
-                   int displacement, String fuelType) {
+                   float displ, String fuelType) {
         this.highwayMPG = highwayMPG;
         this.cityMPG = cityMPG;
         this.averageMPG = averageMPG;
@@ -42,8 +39,13 @@ public class Vehicle {
         this.model = model;
         this.year = year;
         this.cylinders = cylinders;
-        this.displacement = displacement;
+        this.displ = displ;
         this.fuelType = fuelType;
+    }
+
+    @Override
+    public String toString() {
+        return make;
     }
 
     public int getHighwayMPG() {
@@ -102,12 +104,12 @@ public class Vehicle {
         this.cylinders = cylinders;
     }
 
-    public int getDisplacement() {
-        return displacement;
+    public float getDispl() {
+        return displ;
     }
 
-    public void setDisplacement(int displacement) {
-        this.displacement = displacement;
+    public void setDispl(float displ) {
+        this.displ = displ;
     }
 
     public String getFuelType() {
