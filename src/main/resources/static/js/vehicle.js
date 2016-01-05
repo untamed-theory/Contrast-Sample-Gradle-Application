@@ -14,8 +14,8 @@ angular.module('VehicleMPG').service('vehicle', function ($http, $q) {
                     }
                 );
         },
-        getVehicleStats: function () {
-            return $http.get('/vehicles/stats')
+        getVehicleMakes: function () {
+            return $http.get('/vehicles/makes')
                 .then(
                     function (response) {
                         return response.data;

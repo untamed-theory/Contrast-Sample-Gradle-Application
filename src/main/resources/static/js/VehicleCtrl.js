@@ -17,7 +17,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                 }
             );
 
-        vehicle.getVehicleStats()
+        vehicle.getVehicleMakes()
             .then(
                 function (data) {
                     $scope.vehicleInfo.makes = data;
@@ -33,7 +33,11 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .then(
                 function (data) {
                     $scope.vehicles = data;
-                    // $scope.createChart();
+
+                    // remove previous chart
+                    d3.select("svg").remove();
+                    // repopulate data
+                    $scope.createChart();
                 },
                 function (err) {
                     console.error(err);
@@ -66,36 +70,34 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         // Scale the range of the data
-        x.domain(d3.extent($scope.vehicles, function (d) {
+        // pad 5 years on either side
+        x.domain([d3.min($scope.vehicles, function (d) {
             return d.year;
-        }));
-        //y.domain(d3.extent($scope.vehicles, function (d) {
-        //    return d.averageMPG;
-        //}));
+        }) - 5, d3.max($scope.vehicles, function (d) {
+            return d.year;
+        }) + 5]);
 
-        x.domain([1980, 2020]);
-
-        y.domain([0, d3.max($scope.vehicles, function(d) {
+        y.domain([0, d3.max($scope.vehicles, function (d) {
             return d.averageMPG;
         })]);
 
-        // Add the scatterplot
+        // add data to canvas and fill
         svg.selectAll("dot")
             .data($scope.vehicles)
             .enter()
             .append("circle")
             .attr("class", "dot")
-            .attr("r", 2)
+            .attr("r", 3)
             .attr("cx", function (d) {
                 return x(d.year);
             })
             .attr("cy", function (d) {
                 return y(d.averageMPG);
             })
-            .style("fill", function(d, i){
-                if (d.averageMPG < 10) {
+            .style("fill", function (d, i) {
+                if (d.averageMPG <= 15) {
                     return "red";
-                } else if (d.averageMPG > 10 && d.averageMPG < 20){
+                } else if (d.averageMPG > 15 && d.averageMPG < 30) {
                     return "orange";
                 } else {
                     return "green";
@@ -105,18 +107,25 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         // Add the X Axis
         svg.append("g")
             .attr("class", "x axis")
-            // .style({ 'stroke': 'Black', 'fill': 'none', 'stroke-width': '1px'})
             .attr("transform", "translate(0," + height + ")")
-            .text("Year")
-            .call(xAxis);
+            .call(xAxis)
+        .append("text")
+            .attr("class", "label")
+            .attr("y", -margin.right)
+            .style("text-anchor", "start")
+            .text("Year");
 
         // Add the Y Axis
         svg.append("g")
             .attr("class", "y axis")
-            // .style({ 'stroke': 'Black', 'fill': 'none', 'stroke-width': '1px'})
             .attr("transform", "translate(" + width + ",0)")
-            .text("Miles per Gallon")
-            .call(yAxis);
+            .call(yAxis)
+        .append("text")
+            .attr("class", "label")
+            .attr("x", -100)
+            .attr("y", margin.right)
+            .attr("transform", "rotate(-90)")
+            .text("Average MPG");
     };
 
     $scope.populateData();

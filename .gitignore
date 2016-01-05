@@ -12,9 +12,6 @@
 # .idea/dictionaries
 # .idea/shelf
 
-# Mongo Explorer plugin:
-# .idea/mongoSettings.xml
-
 ## File-based project format:
 *.ipr
 *.iws
@@ -23,13 +20,6 @@
 
 # IntelliJ
 /out/
-
-# mpeltonen/sbt-idea plugin
-.idea_modules/
-
-## Web App
-src/main/webapp/node_modules/*
-src/main/webapp/bower_components/*
 
 ## Data
 data/*

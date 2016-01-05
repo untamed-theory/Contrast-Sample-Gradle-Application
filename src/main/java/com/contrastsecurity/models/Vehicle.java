@@ -28,7 +28,18 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    // @PersistenceConstructor
+    /**
+     * Vehicle class represented as a Mongo document
+     * @param highwayMPG highway miles per gallon
+     * @param cityMPG city miles per gallon
+     * @param averageMPG average miles per gallon
+     * @param make make of the vehicle
+     * @param model model of the vehicle
+     * @param year year of the vehicle
+     * @param cylinders number of cylinders
+     * @param displ displacement of the vehicle
+     * @param fuelType type of fuel the vehicle uses
+     */
     public Vehicle(int highwayMPG, int cityMPG, int averageMPG, String make, String model, int year, int cylinders,
                    float displ, String fuelType) {
         this.highwayMPG = highwayMPG;
@@ -44,7 +55,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return make;
+        return Integer.toString(year) + " " + make + " " + model;
     }
 
     public int getHighwayMPG() {

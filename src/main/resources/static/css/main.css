@@ -1,6 +1,9 @@
 /*
  * Sidebar
  */
+body {
+    background-color: #f5f5f5;
+}
 
 .sidebar {
     position: fixed;
@@ -10,8 +13,8 @@
     z-index: 1000;
     display: block;
     overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    background-color: #f5f5f5;
+    overflow-y: auto;
+    background-color: #68838B;
     border-right: 1px solid #eee;
 }
 
@@ -26,12 +29,14 @@
 .main {
     padding: 20px;
 }
+
 @media (min-width: 768px) {
     .main {
         padding-right: 40px;
         padding-left: 40px;
     }
 }
+
 .main .page-header {
     margin-top: 0;
 }
@@ -43,4 +48,8 @@
     fill: none;
     stroke: #aaa;
     shape-rendering: crispEdges;
+}
+
+.dot {
+    stroke: #000;
 }

@@ -144,8 +144,8 @@ public class VehicleController {
      * Retrieves all unique vehicle makes.
      * @return List of Vehicle makes
      */
-    @RequestMapping(value = "/stats", method = RequestMethod.GET)
-    public ResponseEntity<List<Vehicle>> getVehicleStats() {
+    @RequestMapping(value = "/makes", method = RequestMethod.GET)
+    public ResponseEntity<List<Vehicle>> getVehicleMakes() {
 
         List<Vehicle> makes = mongoTemplate.getCollection("vehicle").distinct("make");
 

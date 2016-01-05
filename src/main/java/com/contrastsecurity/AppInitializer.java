@@ -39,17 +39,22 @@ public class AppInitializer implements ServletContextInitializer {
             return;
         }
 
+        CsvSchema schema = CsvSchema.emptySchema().withHeader();
         CsvMapper mapper = new CsvMapper();
         mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
-        File csvFile = new File("C:\\Users\\User\\Documents\\Development\\contrastsecurity\\data\\small_vehicles.csv");
+
+        // retrieve csv file from /resources
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        // initialize
+        File csvFile;
         MappingIterator<Map.Entry> it;
 
-        CsvSchema schema = CsvSchema.emptySchema().withHeader();
-
         try {
+            csvFile = new File(classLoader.getResource("data/vehicles.csv").getFile());
             it = mapper.readerFor(Vehicle.class).with(schema).readValues(csvFile);
-        } catch (IOException e) {
-            log.error("Unable to read in file.");
+        } catch (IOException | NullPointerException e) {
+            log.error("Unable to find file.");
             return;
         }
 

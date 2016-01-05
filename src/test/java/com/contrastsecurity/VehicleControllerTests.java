@@ -39,9 +39,12 @@ public class VehicleControllerTests {
 
     @Before
     public void setUp() {
+        // this should be in @BeforeClass but vehicleRepository cannot be in a static method
+        vehicleRepository.deleteAll();
+
         Vehicle acura = new Vehicle(30, 22, 26, "Acura", "Integra", 2000, 4, 2.0f, "Regular");
         Vehicle ford = new Vehicle(30, 22, 26, "Ford", "Mustang", 2006, 8, 4.6f, "Premium");
-        Vehicle bmw = new Vehicle(30, 22, 26, "BMW", "m3", 2010, 8, 4.0f, "Premium");
+        Vehicle bmw = new Vehicle(30, 22, 26, "BMW", "M3", 2010, 8, 4.0f, "Premium");
 
         vehicleRepository.save(Arrays.asList(acura, ford, bmw));
 
@@ -52,6 +55,7 @@ public class VehicleControllerTests {
     @After
     public void tearDown() {
         // remove all test vehicles
+        // this should be in @AfterClass but vehicleRepository cannot be in a static method
         vehicleRepository.deleteAll();
     }
 
