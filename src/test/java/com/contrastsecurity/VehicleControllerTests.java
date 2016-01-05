@@ -133,5 +133,25 @@ public class VehicleControllerTests {
                 .body("[0].make", equalTo("Acura"))
                 .body("size()", is(1));
     }
+
+    @Test
+    public void testEmptyFilter() {
+
+        when().
+                get("/vehicles/filter").
+                then().
+                statusCode(200)
+                .body("isEmpty()", is(false))
+                .body("size()", is(3));
+    }
+
+    @Test
+    public void testFilterNoResults() {
+
+        when().
+                get("/vehicles/filter?to=1900").
+                then().
+                statusCode(204);
+    }
 }
 

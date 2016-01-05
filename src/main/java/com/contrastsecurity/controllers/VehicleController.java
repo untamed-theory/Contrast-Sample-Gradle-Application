@@ -26,6 +26,10 @@ public class VehicleController {
     @Autowired
     MongoTemplate mongoTemplate;
 
+    /**
+     * Retrieves all vehicles in repository
+     * @return List of Vehicles
+     */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
 
@@ -38,6 +42,11 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves vehicles of certain make
+     * @param make make of vehicle
+     * @return List of Vehicles
+     */
     @RequestMapping(value = "/make", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getVehiclesByMake(@RequestParam(value = "make") String make) {
         List<Vehicle> vehicles = vehicleService.findByMake(make);
@@ -49,6 +58,11 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves vehicles of certain model
+     * @param model model of vehicle
+     * @return List of Vehicles
+     */
     @RequestMapping(value = "/model", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getVehiclesByModel(@RequestParam(value = "model") String model) {
         List<Vehicle> vehicles = vehicleService.findByModel(model);
@@ -60,6 +74,11 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves vehicle of a certain year.
+     * @param year year of vehicle
+     * @return List of Vehicles
+     */
     @RequestMapping(value = "/year", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getVehiclesByYear(@RequestParam(value = "year") int year) {
         List<Vehicle> vehicles = vehicleService.findByYear(year);
@@ -71,7 +90,12 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
-    // /vehicle/years?from=1990&to=1995
+    /**
+     * Retrieves vehicles between the two years
+     * @param fromYear year to filter on
+     * @param toYear End year to filter on
+     * @return List of Vehicles
+     */
     @RequestMapping(value = "/years", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getVehiclesBetweenYears(@RequestParam(value = "from") int fromYear,
                                                                  @RequestParam(value = "to") int toYear) {
@@ -84,6 +108,11 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all vehicles with number of cylinders.
+     * @param cylinders number of cylinders
+     * @return List of Vehicle
+     */
     @RequestMapping(value = "/cylinders", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getVehiclesByModel(@RequestParam(value = "cylinders") int cylinders) {
         List<Vehicle> vehicles = vehicleService.findByCylinders(cylinders);
@@ -95,6 +124,11 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all vehicles of a certain fuel type.
+     * @param type type of fuel
+     * @return List of Vehicles
+     */
     @RequestMapping(value = "/fuel", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getVehiclesByFuelType(@RequestParam(value = "type") String type) {
         List<Vehicle> vehicles = vehicleService.findByFuelType(type);
@@ -106,6 +140,10 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all unique vehicle makes.
+     * @return List of Vehicle makes
+     */
     @RequestMapping(value = "/stats", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getVehicleStats() {
 
@@ -114,16 +152,27 @@ public class VehicleController {
         return new ResponseEntity<>(makes, HttpStatus.OK);
     }
 
+    /**
+     * Filters the vehicles returned.
+     * @param make Vehicle make
+     * @param fromYear Beginning year to filter on
+     * @param toYear End year to filter on
+     * @return List of filtered Vehicles
+     */
     @RequestMapping(value = "/filter", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> filter(@RequestParam(value = "make", required = false) String make,
                                                 @RequestParam(value = "from", required = false) Integer fromYear,
                                                 @RequestParam(value = "to", required = false) Integer toYear) {
+        // Empty Query
         Query query = new Query();
 
+        // filter on make
         if (make != null) {
             query.addCriteria(Criteria.where("make").is(make));
         }
 
+        // filter on year(s)
+        // Options: no years, 1 year, or both years
         if (fromYear != null && toYear != null) {
             query.addCriteria(Criteria.where("year").gte(fromYear).andOperator(Criteria.where("year").lte(toYear)));
         } else if (fromYear != null) {

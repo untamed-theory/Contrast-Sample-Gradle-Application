@@ -14,17 +14,6 @@ angular.module('VehicleMPG').service('vehicle', function ($http, $q) {
                     }
                 );
         },
-        getVehiclesByMake: function (make) {
-            return $http.get('/vehicles/make?make=' + make)
-                .then(
-                    function (response) {
-                        return response.data;
-                    },
-                    function (errResponse) {
-                        return $q.reject(errResponse);
-                    }
-                );
-        },
         getVehicleStats: function () {
             return $http.get('/vehicles/stats')
                 .then(
