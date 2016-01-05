@@ -1,26 +1,30 @@
 package com.contrastsecurity.controllers;
 
 
+import com.contrastsecurity.models.Vehicle;
+import com.contrastsecurity.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
-
-import com.contrastsecurity.models.Vehicle;
-import com.contrastsecurity.services.VehicleService;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "/vehicle", method = RequestMethod.GET)
+@RequestMapping(value = "/vehicles", method = RequestMethod.GET)
 public class VehicleController {
 
     @Autowired
     VehicleService vehicleService;
 
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
@@ -102,4 +106,38 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/stats", method = RequestMethod.GET)
+    public ResponseEntity<List<Vehicle>> getVehicleStats() {
+
+        List<Vehicle> makes = mongoTemplate.getCollection("vehicle").distinct("make");
+
+        return new ResponseEntity<>(makes, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/filter", method = RequestMethod.GET)
+    public ResponseEntity<List<Vehicle>> filter(@RequestParam(value = "make", required = false) String make,
+                                                @RequestParam(value = "from", required = false) Integer fromYear,
+                                                @RequestParam(value = "to", required = false) Integer toYear) {
+        Query query = new Query();
+
+        if (make != null) {
+            query.addCriteria(Criteria.where("make").is(make));
+        }
+
+        if (fromYear != null && toYear != null) {
+            query.addCriteria(Criteria.where("year").gte(fromYear).andOperator(Criteria.where("year").lte(toYear)));
+        } else if (fromYear != null) {
+            query.addCriteria(Criteria.where("year").gte(fromYear));
+        } else if (toYear != null) {
+            query.addCriteria(Criteria.where("year").lte(toYear));
+        }
+
+        List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);
+
+        if (vehicles.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(vehicles, HttpStatus.OK);
+    }
 }

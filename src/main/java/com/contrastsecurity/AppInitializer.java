@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -27,13 +28,21 @@ public class AppInitializer implements ServletContextInitializer {
     @Autowired
     private VehicleRepository repository;
 
+    @Autowired
+    MongoTemplate mongoTemplate;
+
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
 
+        if (mongoTemplate.getCollection("vehicle").count() > 0) {
+            // we assume the app was previously initialized already
+            return;
+        }
+
         CsvMapper mapper = new CsvMapper();
         mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
-        File csvFile = new File("small_vehicles.csv");
-        MappingIterator<Map.Entry> it = null;
+        File csvFile = new File("C:\\Users\\User\\Documents\\Development\\contrastsecurity\\data\\small_vehicles.csv");
+        MappingIterator<Map.Entry> it;
 
         CsvSchema schema = CsvSchema.emptySchema().withHeader();
 
@@ -49,9 +58,14 @@ public class AppInitializer implements ServletContextInitializer {
         }
 
         while (it.hasNext()) {
-            Vehicle vehicle = (Vehicle) it.next();
+            try {
+                Vehicle vehicle = (Vehicle) it.next();
 
-            repository.save(vehicle);
+                repository.save(vehicle);
+            } catch (Exception e) {
+                // error saving a vehicle, continue
+            }
+
         }
     }
 }
