@@ -28,6 +28,7 @@ public class VehicleController {
 
     /**
      * Retrieves all vehicles in repository
+     *
      * @return List of Vehicles
      */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -44,6 +45,7 @@ public class VehicleController {
 
     /**
      * Retrieves vehicles of certain make
+     *
      * @param make make of vehicle
      * @return List of Vehicles
      */
@@ -60,6 +62,7 @@ public class VehicleController {
 
     /**
      * Retrieves vehicles of certain model
+     *
      * @param model model of vehicle
      * @return List of Vehicles
      */
@@ -76,6 +79,7 @@ public class VehicleController {
 
     /**
      * Retrieves vehicle of a certain year.
+     *
      * @param year year of vehicle
      * @return List of Vehicles
      */
@@ -92,8 +96,9 @@ public class VehicleController {
 
     /**
      * Retrieves vehicles between the two years
+     *
      * @param fromYear year to filter on
-     * @param toYear End year to filter on
+     * @param toYear   End year to filter on
      * @return List of Vehicles
      */
     @RequestMapping(value = "/years", method = RequestMethod.GET)
@@ -110,6 +115,7 @@ public class VehicleController {
 
     /**
      * Retrieves all vehicles with number of cylinders.
+     *
      * @param cylinders number of cylinders
      * @return List of Vehicle
      */
@@ -126,6 +132,7 @@ public class VehicleController {
 
     /**
      * Retrieves all vehicles of a certain fuel type.
+     *
      * @param type type of fuel
      * @return List of Vehicles
      */
@@ -142,6 +149,7 @@ public class VehicleController {
 
     /**
      * Retrieves all unique vehicle makes.
+     *
      * @return List of Vehicle makes
      */
     @RequestMapping(value = "/makes", method = RequestMethod.GET)
@@ -154,9 +162,10 @@ public class VehicleController {
 
     /**
      * Filters the vehicles returned.
-     * @param make Vehicle make
+     *
+     * @param make     Vehicle make
      * @param fromYear Beginning year to filter on
-     * @param toYear End year to filter on
+     * @param toYear   End year to filter on
      * @return List of filtered Vehicles
      */
     @RequestMapping(value = "/filter", method = RequestMethod.GET)
