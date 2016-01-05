@@ -19,6 +19,4 @@ public interface VehicleRepository extends MongoRepository<Vehicle, String> {
     List<Vehicle> findByCylinders(int cylinders);
 
     List<Vehicle> findByFuelType(String type);
-
-    // List<Vehicle> findByDisplBetween(float from, float to);
 }

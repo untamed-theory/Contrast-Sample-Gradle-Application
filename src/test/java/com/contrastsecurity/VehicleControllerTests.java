@@ -3,6 +3,7 @@ package com.contrastsecurity;
 import com.contrastsecurity.models.Vehicle;
 import com.contrastsecurity.repositories.VehicleRepository;
 import com.jayway.restassured.RestAssured;
+import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 
 import static com.jayway.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 
 
@@ -67,7 +69,7 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/all").
                 then().
-                statusCode(204);
+                statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
     @Test
@@ -76,7 +78,7 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/all").
                 then().
-                statusCode(200)
+                statusCode(HttpStatus.SC_OK)
                 .body("isEmpty()", is(false))
                 .body("size()", is(3));
     }
@@ -87,9 +89,113 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/make?make=BMW").
                 then().
-                statusCode(200)
+                statusCode(HttpStatus.SC_OK)
                 .body("isEmpty()", is(false))
                 .body("size()", is(1));
+    }
+
+    @Test
+    public void testGetModel() {
+
+        when().
+                get("/vehicles/model?model=M3").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("size()", is(1))
+                .body("[0].model", equalTo("M3"));
+
+    }
+
+    @Test
+    public void testGetModelEmpty() {
+
+        when().
+                get("/vehicles/model?model=Escalade").
+                then().
+                statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+
+    @Test
+    public void testGetYear() {
+
+        when().
+                get("/vehicles/year?year=2000").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("[0].make", equalTo("Acura"))
+                .body("size()", is(1));
+    }
+
+    @Test
+    public void testGetYearEmpty() {
+
+        when().
+                get("/vehicles/year?year=1991").
+                then().
+                statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void testGetYears() {
+
+        when().
+                get("/vehicles/years?from=2005&to=2007").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("size()", is(1));
+    }
+
+    @Test
+    public void testGetYearsEmpty() {
+
+        when().
+                get("/vehicles/years?from=2010&to=2015").
+                then().
+                statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void testGetCylinders() {
+
+        when().
+                get("/vehicles/cylinders?cylinders=8").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("size()", is(2));
+    }
+
+    @Test
+    public void testGetCylindersEmpty() {
+
+        when().
+                get("/vehicles/cylinders?cylinders=6").
+                then().
+                statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void testGetFuelType() {
+
+        when().
+                get("/vehicles/fuel?type=Regular").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("size()", is(1));
+    }
+
+    @Test
+    public void testGetFuelTypeEmpty() {
+
+        when().
+                get("/vehicles/fuel?type=MidGrade").
+                then().
+                statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
     @Test
@@ -98,7 +204,7 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/filter?make=Ford&from=2005&to=2007").
                 then().
-                statusCode(200)
+                statusCode(HttpStatus.SC_OK)
                 .body("isEmpty()", is(false))
                 .body("[0].make", equalTo("Ford"));
     }
@@ -109,7 +215,7 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/filter?make=Acura").
                 then().
-                statusCode(200)
+                statusCode(HttpStatus.SC_OK)
                 .body("isEmpty()", is(false))
                 .body("[0].make", equalTo("Acura"));
     }
@@ -120,7 +226,7 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/filter?from=2008").
                 then().
-                statusCode(200)
+                statusCode(HttpStatus.SC_OK)
                 .body("isEmpty()", is(false))
                 .body("[0].make", equalTo("BMW"))
                 .body("size()", is(1));
@@ -132,7 +238,7 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/filter?to=2000").
                 then().
-                statusCode(200)
+                statusCode(HttpStatus.SC_OK)
                 .body("isEmpty()", is(false))
                 .body("[0].make", equalTo("Acura"))
                 .body("size()", is(1));
@@ -144,7 +250,7 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/filter").
                 then().
-                statusCode(200)
+                statusCode(HttpStatus.SC_OK)
                 .body("isEmpty()", is(false))
                 .body("size()", is(3));
     }
@@ -155,7 +261,19 @@ public class VehicleControllerTests {
         when().
                 get("/vehicles/filter?to=1900").
                 then().
-                statusCode(204);
+                statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void testGetMakes() {
+
+        when().
+                get("/vehicles/makes").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("size()", is(3))
+                .body("", hasItems("Acura", "BMW", "Ford"));
     }
 }
 
