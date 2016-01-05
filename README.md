@@ -1,4 +1,4 @@
-## Vehicle MPG Web Application
+# Vehicle MPG Web Application
 Author: Justin Leo
 
 For Contrast Security Assignment
@@ -17,31 +17,31 @@ else it loads the vehicle.csv and maps the columns to a Vehicle object that repr
 
 There are many other filters in the controllers like cylinders and city MPG but are not shown on the page.
 
-# Dependencies
+## Dependencies
 Mongo 3.2
 Java 1.8
 Maven 3.3.9
 
-# To run the application
+## To run the application
 mvn clean spring-boot:run
 
 Note: Spring takes care of the database creation and assumes localhost:27017 for location
 
 Then go to http://localhost:8080/
 
-# To run the tests
+## To run the tests
 mvn test
 
-# CSV Resource
+## CSV Resource
 https://www.fueleconomy.gov/feg/download.shtml
 
-# Resources
+## Resources
 https://spring.io/guides/tutorials/spring-security-and-angular-js/
 http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/
 http://g00glen00b.be/spring-boot-rest-assured/
 http://bl.ocks.org/weiglemc/6185069
 
-# Future:
+## Future:
 - overlay average, city, and highway MPG
 - tool tips to see vehicle information
 - more filters to the form
