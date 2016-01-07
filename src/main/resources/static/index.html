@@ -16,17 +16,21 @@
 
 <div class="container-fluid" ng-controller="VehicleController">
     <!-- Sidebar -->
-    <div class="col-md-3 sidebar">
+    <div class="filter">
         <h1 class="page-header text-center">Filter</h1>
 
         <form ng-submit="filter()">
             <div class="form-group">
                 <label for="make">Make</label>
                 <select class="form-control" id="make" ng-model="filterForm.make">
-                    <option ng-repeat="make in vehicleInfo.makes | orderBy:'toString()'" value="{{make}}">
+                    <option ng-repeat="make in info.makes | orderBy:'toString()'" value="{{make}}">
                         {{make}}
                     </option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="cylinders">Cylinders</label>
+                <input type="text" class="form-control" id="cylinders" ng-model="filterForm.Cylinders">
             </div>
             <div class="form-group">
                 <label for="fromYear">Year Form</label>
@@ -37,12 +41,39 @@
                 <input type="text" class="form-control" id="toYear" ng-model="filterForm.toYear">
             </div>
             <button type="submit" class="btn btn-default">Filter</button>
+
+            <hr />
+
+            <p>Select MPG type:</p>
+
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default active" ng-click="selectMPGType('averageMPG')">
+                    <input type="radio"> Average MPG
+                </label>
+                <label class="btn btn-default" ng-click="selectMPGType('cityMPG')">
+                    <input type="radio"> City MPG
+                </label>
+                <label class="btn btn-default" ng-click="selectMPGType('highwayMPG')">
+                    <input type="radio"> Highway MPG
+                </label>
+            </div>
+
+            <div ng-show="alerts.length">
+                <hr />
+
+                <p>Alerts</p>
+
+                <div class="alert alert-danger" ng-repeat="msg in alerts">
+                    {{ msg }}
+                </div>
+
+            </div>
         </form>
     </div>
     <!-- /Sidebar-->
 
     <!-- Analytics -->
-    <div class="col-md-9 col-md-offset-4 main">
+    <div class="main">
         <h1 class="page-header text-center">Vehicle Miles Per Gallon Over Time</h1>
         <!-- Chart -->
         <div class="row">

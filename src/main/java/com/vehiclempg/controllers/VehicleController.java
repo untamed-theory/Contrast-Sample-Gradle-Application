@@ -1,8 +1,8 @@
-package com.contrastsecurity.controllers;
+package com.vehiclempg.controllers;
 
 
-import com.contrastsecurity.models.Vehicle;
-import com.contrastsecurity.services.VehicleService;
+import com.vehiclempg.models.Vehicle;
+import com.vehiclempg.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/vehicles", method = RequestMethod.GET)
@@ -34,7 +35,10 @@ public class VehicleController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
 
-        List<Vehicle> vehicles = vehicleService.getAllVehicles();
+        List<Vehicle> vehicles = vehicleService.getAllVehicles()
+                .stream()
+                .limit(50)
+                .collect(Collectors.toList());
 
         if (vehicles.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

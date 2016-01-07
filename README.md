@@ -23,7 +23,8 @@ Java 1.8
 Maven 3.3.9
 
 ## To run the application
-mvn clean spring-boot:run
+1. Start MongoDB with mongod See: https://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/
+2. mvn clean spring-boot:run
 
 Note: Spring takes care of the database creation and assumes localhost:27017 for location
 
@@ -42,9 +43,6 @@ http://g00glen00b.be/spring-boot-rest-assured/
 http://bl.ocks.org/weiglemc/6185069
 
 ## Future:
-- overlay average, city, and highway MPG
 - tool tips to see vehicle information
-- more filters to the form
-- basic validation
 - more charts
 - statistics on MPG

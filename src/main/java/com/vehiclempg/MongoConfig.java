@@ -1,4 +1,4 @@
-package com.contrastsecurity;
+package com.vehiclempg;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 
     @Override
     protected String getMappingBasePackage() {
-        return "com.contrastsecurity.repositories";
+        return "com.vehiclempg.repositories";
     }
 
     @Bean

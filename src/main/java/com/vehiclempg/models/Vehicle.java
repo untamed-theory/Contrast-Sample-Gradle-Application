@@ -1,4 +1,4 @@
-package com.contrastsecurity.models;
+package com.vehiclempg.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;

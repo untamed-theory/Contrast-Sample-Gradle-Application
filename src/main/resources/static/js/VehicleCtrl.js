@@ -2,8 +2,9 @@
 
 angular.module('VehicleMPG').controller('VehicleController', function ($scope, vehicle) {
     $scope.vehicles = [];
-    $scope.filterForm = {fromYear: 1990, toYear: 2000, make: '', model: '', cylinders: null, displacement: null};
-    $scope.vehicleInfo = {makes: []};
+    $scope.filterForm = {fromYear: 1990, toYear: 2000, make: '', cylinders: null, displacement: null};
+    $scope.info = {makes: [], selectedMPG: 'averageMPG'};
+    $scope.alerts = [];
 
     $scope.populateData = function () {
         vehicle.getAllVehicles()
@@ -20,7 +21,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         vehicle.getVehicleMakes()
             .then(
                 function (data) {
-                    $scope.vehicleInfo.makes = data;
+                    $scope.info.makes = data;
                 },
                 function (err) {
                     console.error(err);
@@ -28,7 +29,42 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             );
     };
 
+    $scope.validateForm = function() {
+
+        if ($scope.filterForm.cylinders === parseInt($scope.filterForm.cylinders, 10)) {
+            $scope.alerts.push("Cylinders must be an integer.")
+        }
+
+        if ($scope.filterForm.fromYear === parseInt($scope.filterForm.fromYear, 10)) {
+            $scope.alerts.push("From year must be an integer.")
+        }
+
+        if ($scope.filterForm.toYear === parseInt($scope.filterForm.toYear, 10)) {
+            $scope.alerts.push("To year must be an integer.")
+        }
+
+        if ($scope.filterForm.fromYear > $scope.filterForm.toYear) {
+            $scope.alerts.push("From year cannot be after to year.")
+        }
+
+        return $scope.alerts.length === 0;
+    };
+
+    $scope.selectMPGType = function (type) {
+        $scope.info.selectedMPG = type;
+
+        // remove previous chart
+        d3.select("svg").remove();
+        // repopulate data
+        $scope.createChart();
+    };
+
     $scope.filter = function () {
+
+        if ($scope.validateForm() === false) {
+            return;
+        }
+
         vehicle.filter($scope.filterForm.make, $scope.filterForm.fromYear, $scope.filterForm.toYear)
             .then(
                 function (data) {
@@ -78,7 +114,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         }) + 5]);
 
         y.domain([0, d3.max($scope.vehicles, function (d) {
-            return d.averageMPG;
+            return d[$scope.info.selectedMPG];
         })]);
 
         // add data to canvas and fill
@@ -92,12 +128,12 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                 return x(d.year);
             })
             .attr("cy", function (d) {
-                return y(d.averageMPG);
+                return y(d[$scope.info.selectedMPG]);
             })
             .style("fill", function (d, i) {
-                if (d.averageMPG <= 15) {
+                if (d[$scope.info.selectedMPG] <= 15) {
                     return "red";
-                } else if (d.averageMPG > 15 && d.averageMPG < 30) {
+                } else if (d[$scope.info.selectedMPG] > 15 && d[$scope.info.selectedMPG] < 30) {
                     return "orange";
                 } else {
                     return "green";
@@ -125,7 +161,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .attr("x", -100)
             .attr("y", margin.right)
             .attr("transform", "rotate(-90)")
-            .text("Average MPG");
+            .text("Miles per gallon");
     };
 
     $scope.populateData();

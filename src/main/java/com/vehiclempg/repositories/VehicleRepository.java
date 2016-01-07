@@ -1,6 +1,6 @@
-package com.contrastsecurity.repositories;
+package com.vehiclempg.repositories;
 
-import com.contrastsecurity.models.Vehicle;
+import com.vehiclempg.models.Vehicle;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

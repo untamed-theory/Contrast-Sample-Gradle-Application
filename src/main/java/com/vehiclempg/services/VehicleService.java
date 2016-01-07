@@ -1,7 +1,7 @@
-package com.contrastsecurity.services;
+package com.vehiclempg.services;
 
-import com.contrastsecurity.models.Vehicle;
-import com.contrastsecurity.repositories.VehicleRepository;
+import com.vehiclempg.models.Vehicle;
+import com.vehiclempg.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
