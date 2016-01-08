@@ -97,7 +97,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
 
     $scope.createChart = function () {
         // Set the dimensions of the canvas / graph
-        var margin = {top: 30, right: 20, bottom: 30, left: 50},
+        var margin = {top: 30, right: 30, bottom: 30, left: 30},
             width = 1000 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
@@ -179,7 +179,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .append("text")
                 .attr("class", "label")
                 .attr("x", width - margin.right)
-                .attr("y", -margin.right)
+                .attr("y", -10)
                 .style("text-anchor", "start")
                 .text("Year");
 
