@@ -108,7 +108,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         // Define the axes
         var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format("d"));
 
-        var yAxis = d3.svg.axis().scale(y).ticks(10).orient("left");
+        var yAxis = d3.svg.axis().scale(y).ticks(10).orient("right");
 
         //  tooltip
         var tooltip = d3.select("body").append("div")
@@ -173,26 +173,26 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
 
         // Add the X Axis
         svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
             .append("text")
-            .attr("class", "label")
-            .attr("y", -margin.right)
-            .style("text-anchor", "start")
-            .text("Year");
+                .attr("class", "label")
+                .attr("x", width - margin.right)
+                .attr("y", -margin.right)
+                .style("text-anchor", "start")
+                .text("Year");
 
         // Add the Y Axis
         svg.append("g")
-            .attr("class", "y axis")
-            .attr("transform", "translate(" + width + ",0)")
-            .call(yAxis)
+                .attr("class", "y axis")
+                .call(yAxis)
             .append("text")
-            .attr("class", "label")
-            .attr("x", -100)
-            .attr("y", margin.right)
-            .attr("transform", "rotate(-90)")
-            .text("Miles per gallon");
+                .attr("class", "label")
+                .attr("x", -100)
+                .attr("y", -15)
+                .attr("transform", "rotate(-90)")
+                .text("Miles per gallon");
     };
 
     $scope.buildToolTip = function(v) {
