@@ -18,9 +18,9 @@ else it loads the vehicle.csv and maps the columns to a Vehicle object that repr
 There are many other filters in the controllers like cylinders and city MPG but are not shown on the page.
 
 ## Dependencies
-Mongo 3.2
-Java 1.8
-Maven 3.3.9
+* Mongo 3.2
+* Java 1.8
+* Maven 3.3.9
 
 ## To run the application
 1. Start MongoDB with mongod See: https://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/
@@ -44,6 +44,5 @@ http://bl.ocks.org/weiglemc/6185069
 http://victorbjelkholm.github.io/ngProgress/
 
 ## Future:
-- tool tips to see vehicle information
 - more charts
 - statistics on MPG
