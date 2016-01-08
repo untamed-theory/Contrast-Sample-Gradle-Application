@@ -55,6 +55,16 @@ body {
     stroke: #000;
 }
 
+.tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 6px;
+    border: 1px solid #000000;
+    background-color: white;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
 /* Styling for the ngProgress itself */
 #ngProgress {
     margin: 0;

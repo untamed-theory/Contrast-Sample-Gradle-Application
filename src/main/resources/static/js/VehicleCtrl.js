@@ -98,8 +98,8 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
     $scope.createChart = function () {
         // Set the dimensions of the canvas / graph
         var margin = {top: 30, right: 20, bottom: 30, left: 50},
-            width = 1200 - margin.left - margin.right,
-            height = 600 - margin.top - margin.bottom;
+            width = 1000 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
 
         // Set the ranges
         var x = d3.scale.linear().range([0, width]);
@@ -109,6 +109,11 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format("d"));
 
         var yAxis = d3.svg.axis().scale(y).ticks(10).orient("left");
+
+        //  tooltip
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
 
         // Adds the svg canvas
         var svg = d3.select("#yearly-change-chart")
@@ -151,6 +156,19 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                 } else {
                     return "green";
                 }
+            })
+            .on("mouseover", function(d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html($scope.buildToolTip(d))
+                    .style("left", (d3.event.pageX + 10) + "px")
+                    .style("top", (d3.event.pageY) + "px");
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
             });
 
         // Add the X Axis
@@ -175,6 +193,21 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .attr("y", margin.right)
             .attr("transform", "rotate(-90)")
             .text("Miles per gallon");
+    };
+
+    $scope.buildToolTip = function(v) {
+        var div = "<strong>" + v.year + " " + v.make + " " + v.model + "</strong>";
+
+        div += "<br>";
+        div += "Cylinders: " + v.cylinders;
+        div += "<br>";
+        div += "Average MPG: " + v.averageMPG;
+        div += "<br>";
+        div += "City MPG: " + v.cityMPG;
+        div += "<br>";
+        div += "Highway MPG: " + v.highwayMPG;
+
+        return div;
     };
 
     $scope.populateData();
