@@ -29,21 +29,22 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             );
     };
 
-    $scope.validateForm = function() {
+    $scope.validateForm = function () {
+        $scope.alerts = []; // clear previous alerts
 
-        if ($scope.filterForm.cylinders === parseInt($scope.filterForm.cylinders, 10)) {
-            $scope.alerts.push("Cylinders must be an integer.")
+        if (isNaN($scope.filterForm.cylinders) || parseInt($scope.filterForm.cylinders) <= 0) {
+            $scope.alerts.push("Cylinders must be a positive integer.")
         }
 
-        if ($scope.filterForm.fromYear === parseInt($scope.filterForm.fromYear, 10)) {
-            $scope.alerts.push("From year must be an integer.")
+        if (isNaN($scope.filterForm.fromYear) || parseInt($scope.filterForm.fromYear) <= 0) {
+            $scope.alerts.push("From year must be a positive integer.")
         }
 
-        if ($scope.filterForm.toYear === parseInt($scope.filterForm.toYear, 10)) {
-            $scope.alerts.push("To year must be an integer.")
+        if (isNaN($scope.filterForm.toYear) || parseInt($scope.filterForm.toYear) <= 0) {
+            $scope.alerts.push("To year must be a positive integer.")
         }
 
-        if ($scope.filterForm.fromYear > $scope.filterForm.toYear) {
+        if (parseInt($scope.filterForm.fromYear) > parseInt($scope.filterForm.toYear)) {
             $scope.alerts.push("From year cannot be after to year.")
         }
 
@@ -55,6 +56,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
 
         // remove previous chart
         d3.select("svg").remove();
+
         // repopulate data
         $scope.createChart();
     };
@@ -72,6 +74,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
 
                     // remove previous chart
                     d3.select("svg").remove();
+
                     // repopulate data
                     $scope.createChart();
                 },
@@ -145,7 +148,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis)
-        .append("text")
+            .append("text")
             .attr("class", "label")
             .attr("y", -margin.right)
             .style("text-anchor", "start")
@@ -156,7 +159,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .attr("class", "y axis")
             .attr("transform", "translate(" + width + ",0)")
             .call(yAxis)
-        .append("text")
+            .append("text")
             .attr("class", "label")
             .attr("x", -100)
             .attr("y", margin.right)
