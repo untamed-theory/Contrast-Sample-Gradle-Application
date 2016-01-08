@@ -25,21 +25,25 @@ angular.module('VehicleMPG').service('vehicle', function ($http, $q) {
                     }
                 );
         },
-        filter: function (make, fromYear, toYear) {
+        filter: function (form) {
 
             var url = '/vehicles/filter?';
             var options = [];
 
-            if (make) {
-               options.push('make=' + make);
+            if (form.make) {
+               options.push('make=' + form.make);
             }
 
-            if (fromYear) {
-                options.push('from=' + fromYear);
+            if (form.cylinders) {
+                options.push('cylinders=' + form.cylinders)
             }
 
-            if (toYear) {
-                options.push('to=' + toYear);
+            if (form.fromYear) {
+                options.push('from=' + form.fromYear);
+            }
+
+            if (form.toYear) {
+                options.push('to=' + form.toYear);
             }
 
             url += options.join('&');

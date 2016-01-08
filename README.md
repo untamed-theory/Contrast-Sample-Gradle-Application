@@ -41,6 +41,7 @@ https://spring.io/guides/tutorials/spring-security-and-angular-js/
 http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/
 http://g00glen00b.be/spring-boot-rest-assured/
 http://bl.ocks.org/weiglemc/6185069
+http://victorbjelkholm.github.io/ngProgress/
 
 ## Future:
 - tool tips to see vehicle information

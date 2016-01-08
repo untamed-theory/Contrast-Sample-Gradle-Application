@@ -21,7 +21,7 @@
 
         <form ng-submit="filter()">
             <div class="form-group">
-                <label for="make">Make</label>
+                <label for="make">Make:</label>
                 <select class="form-control" id="make" ng-model="filterForm.make">
                     <option ng-repeat="make in info.makes | orderBy:'toString()'" value="{{make}}">
                         {{make}}
@@ -29,22 +29,24 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="cylinders">Cylinders</label>
+                <label for="cylinders">Cylinders:</label>
                 <input type="text" class="form-control" id="cylinders" ng-model="filterForm.cylinders">
             </div>
             <div class="form-group">
-                <label for="fromYear">Year Form</label>
+                <label for="fromYear">Year Form:</label>
                 <input type="text" class="form-control" id="fromYear" ng-model="filterForm.fromYear">
             </div>
             <div class="form-group">
-                <label for="toYear">To Year</label>
+                <label for="toYear">To Year:</label>
                 <input type="text" class="form-control" id="toYear" ng-model="filterForm.toYear">
             </div>
             <button type="submit" class="btn btn-default">Filter</button>
 
             <hr />
 
-            <p>Select MPG type:</p>
+            <p>
+                <strong>Select MPG type:</strong>
+            </p>
 
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default active" ng-click="selectMPGType('averageMPG')">
@@ -61,7 +63,9 @@
             <div ng-show="alerts.length">
                 <hr />
 
-                <p>Alerts</p>
+                <p>
+                    <strong>Alerts</strong>
+                </p>
 
                 <div class="alert alert-danger" ng-repeat="msg in alerts">
                     {{ msg }}
@@ -108,6 +112,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
+<script type="text/javascript" src="js/ngprogress.min.js"></script>
 
 
 </body>

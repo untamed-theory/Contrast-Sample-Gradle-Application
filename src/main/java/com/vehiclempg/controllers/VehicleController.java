@@ -35,10 +35,12 @@ public class VehicleController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
 
-        List<Vehicle> vehicles = vehicleService.getAllVehicles()
-                .stream()
-                .limit(50)
-                .collect(Collectors.toList());
+        List<Vehicle> vehicles = vehicleService.getAllVehicles();
+
+        // for testing purposes
+        //        .stream()
+        //        .limit(50)
+        //        .collect(Collectors.toList());
 
         if (vehicles.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -174,6 +176,7 @@ public class VehicleController {
      */
     @RequestMapping(value = "/filter", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> filter(@RequestParam(value = "make", required = false) String make,
+                                                @RequestParam(value = "cylinders", required = false) Integer cylinders,
                                                 @RequestParam(value = "from", required = false) Integer fromYear,
                                                 @RequestParam(value = "to", required = false) Integer toYear) {
         // Empty Query
@@ -182,6 +185,11 @@ public class VehicleController {
         // filter on make
         if (make != null) {
             query.addCriteria(Criteria.where("make").is(make));
+        }
+
+        // filter on cylinders
+        if (cylinders != null) {
+            query.addCriteria(Criteria.where("cylinders").is(cylinders));
         }
 
         // filter on year(s)

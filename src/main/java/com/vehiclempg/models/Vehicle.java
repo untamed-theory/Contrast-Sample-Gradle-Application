@@ -2,6 +2,7 @@ package com.vehiclempg.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -11,14 +12,20 @@ public class Vehicle {
     @Id
     private String id;
 
+    @Indexed
     private int highwayMPG;
+    @Indexed
     private int cityMPG;
+    @Indexed
     private int averageMPG;
 
+    @Indexed
     private String make;
     private String model;
+    @Indexed
     private int year;
 
+    @Indexed
     private int cylinders;
     private float displ;
 

@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('VehicleMPG', []);
+angular.module('VehicleMPG', ['ngProgress']);

@@ -1,20 +1,30 @@
 'use strict';
 
-angular.module('VehicleMPG').controller('VehicleController', function ($scope, vehicle) {
+angular.module('VehicleMPG').controller('VehicleController', function ($scope, vehicle, ngProgressFactory) {
     $scope.vehicles = [];
     $scope.filterForm = {fromYear: 1990, toYear: 2000, make: '', cylinders: null, displacement: null};
     $scope.info = {makes: [], selectedMPG: 'averageMPG'};
     $scope.alerts = [];
 
+    // progress bar
+    $scope.progressbar = ngProgressFactory.createInstance();
+
     $scope.populateData = function () {
+        $scope.progressbar.start();
+
         vehicle.getAllVehicles()
             .then(
                 function (data) {
                     $scope.vehicles = data;
                     $scope.createChart();
+
+                    $scope.progressbar.complete();
                 },
                 function (err) {
                     console.error(err);
+
+                    $scope.progressbar.complete();
+
                 }
             );
 
@@ -67,7 +77,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             return;
         }
 
-        vehicle.filter($scope.filterForm.make, $scope.filterForm.fromYear, $scope.filterForm.toYear)
+        vehicle.filter($scope.filterForm)
             .then(
                 function (data) {
                     $scope.vehicles = data;
