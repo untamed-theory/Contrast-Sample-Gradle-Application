@@ -40,41 +40,101 @@
                 <label for="toYear">To Year:</label>
                 <input type="text" class="form-control" id="toYear" ng-model="filterForm.toYear">
             </div>
-            <button type="submit" class="btn btn-default">Filter</button>
+            <button type="button" class="btn btn-default" ng-click="clear()">
+                Clear
+            </button>
+            <button type="submit" class="btn btn-primary" style="float: right;">Filter</button>
+        </form>
 
+        <hr />
+
+        <p>
+            <strong>
+                Compare Vehicle Makes:
+            </strong>
+        </p>
+
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#makesModal">
+            Select makes
+        </button>
+
+        <div ng-show="compareMakes.length" class="compare-makes">
+            <hr />
+
+            <button class="btn btn-primary" ng-repeat="cm in compareMakes">
+                {{ cm }}
+            </button>
+        </div>
+
+        <hr />
+
+        <p>
+            <strong>Select MPG type:</strong>
+        </p>
+
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default active" ng-click="selectMPGType('averageMPG')">
+                <input type="radio"> Average MPG
+            </label>
+            <label class="btn btn-default" ng-click="selectMPGType('cityMPG')">
+                <input type="radio"> City MPG
+            </label>
+            <label class="btn btn-default" ng-click="selectMPGType('highwayMPG')">
+                <input type="radio"> Highway MPG
+            </label>
+        </div>
+
+        <div ng-show="alerts.length">
             <hr />
 
             <p>
-                <strong>Select MPG type:</strong>
+                <strong>Alerts</strong>
             </p>
 
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default active" ng-click="selectMPGType('averageMPG')">
-                    <input type="radio"> Average MPG
-                </label>
-                <label class="btn btn-default" ng-click="selectMPGType('cityMPG')">
-                    <input type="radio"> City MPG
-                </label>
-                <label class="btn btn-default" ng-click="selectMPGType('highwayMPG')">
-                    <input type="radio"> Highway MPG
-                </label>
+            <div class="alert alert-danger" ng-repeat="msg in alerts">
+                {{ msg }}
             </div>
 
-            <div ng-show="alerts.length">
-                <hr />
+        </div>
 
-                <p>
-                    <strong>Alerts</strong>
-                </p>
-
-                <div class="alert alert-danger" ng-repeat="msg in alerts">
-                    {{ msg }}
-                </div>
-
-            </div>
-        </form>
     </div>
     <!-- /Sidebar-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="makesModal" tabindex="-1" role="dialog" aria-labelledby="makesModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="makesModalLabel">Compare Vehicle Makes</h4>
+                </div>
+
+                <div class="modal-body">
+                    <label for="compareMake">Select Makes:</label>
+                    <select class="form-control" id="compareMake" ng-model="info.make" ng-change="addMakeToCompare()">
+                        <option ng-repeat="make in info.makes | orderBy:'toString()'" value="{{make}}">
+                            {{make}}
+                        </option>
+                    </select>
+
+                    <div ng-show="compareMakes.length" class="compare-makes">
+                        <hr />
+
+                        <button class="btn btn-primary" ng-repeat="cm in compareMakes">
+                            {{ cm }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" style="float: left;" ng-click="clearCompareMakes()">Clear</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="compare()">Compare</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
 
     <!-- Analytics -->
     <div class="main">

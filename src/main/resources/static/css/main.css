@@ -43,8 +43,19 @@ body {
 }
 
 /*
- * D3
+ * Modal
  */
+
+.compare-makes button {
+    margin: 7px;
+}
+/*
+ * D3
+#yearly-change-chart {
+    background-color: white;
+}
+ */
+
 .axis path, .axis line {
     fill: none;
     stroke: #aaa;

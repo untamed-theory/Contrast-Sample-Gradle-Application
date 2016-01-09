@@ -3,8 +3,9 @@
 angular.module('VehicleMPG').controller('VehicleController', function ($scope, vehicle, ngProgressFactory) {
     $scope.vehicles = [];
     $scope.filterForm = {fromYear: 1990, toYear: 2000, make: '', cylinders: null, displacement: null};
-    $scope.info = {makes: [], selectedMPG: 'averageMPG'};
+    $scope.info = {makes: [], selectedMPG: 'averageMPG', make: ''};
     $scope.alerts = [];
+    $scope.compareMakes = [];
 
     // progress bar
     $scope.progressbar = ngProgressFactory.createInstance();
@@ -71,6 +72,34 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         $scope.createChart();
     };
 
+    $scope.addMakeToCompare = function () {
+        if ($scope.compareMakes.indexOf($scope.info.make) === -1) {
+            $scope.compareMakes.push($scope.info.make);
+        }
+    };
+
+    $scope.clearCompareMakes = function () {
+        $scope.compareMakes = [];
+    };
+
+    $scope.compare = function () {
+        vehicle.compareVehicleMakes($scope.compareMakes)
+            .then(
+                function (data) {
+                    $scope.vehicles = data;
+
+                    // remove previous chart
+                    d3.select("svg").remove();
+
+                    // repopulate data
+                    $scope.createChart();
+                },
+                function (err) {
+                    console.error(err);
+                }
+            );
+    };
+
     $scope.filter = function () {
 
         if ($scope.validateForm() === false) {
@@ -93,6 +122,27 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                 }
             );
 
+    };
+
+    $scope.clear = function () {
+        $scope.filterForm = {fromYear: null, toYear: null, make: null, cylinders: null, displacement: null};
+        $scope.vehicles = [];
+        $scope.compareMakes = [];
+
+        vehicle.getAllVehicles()
+            .then(
+                function (data) {
+                    $scope.vehicles = data;
+
+                    // remove previous chart
+                    d3.select("svg").remove();
+
+                    $scope.createChart();
+                },
+                function (err) {
+                    console.error(err);
+                }
+            );
     };
 
     $scope.createChart = function () {

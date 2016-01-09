@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,10 @@ public class VehicleController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
 
-        List<Vehicle> vehicles = vehicleService.getAllVehicles();
+        List<Vehicle> vehicles = vehicleService.getAllVehicles()
+                .stream()
+                .limit(50)
+                .collect(Collectors.toList());
 
         // for testing purposes
         //        .stream()
@@ -164,6 +168,24 @@ public class VehicleController {
         List<Vehicle> makes = mongoTemplate.getCollection("vehicle").distinct("make");
 
         return new ResponseEntity<>(makes, HttpStatus.OK);
+    }
+
+    /**
+     * Filter based on multiple makes.
+     *
+     * @return List of Vehicles
+     */
+    @RequestMapping(value = "/compare", method = RequestMethod.GET)
+    public ResponseEntity<List<Vehicle>> compareVehicleMakes(@RequestParam(value = "makes") String makes) {
+
+        List<String> splitMakes = Arrays.asList(makes.split(","));
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("make").in(splitMakes));
+
+        List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);
+
+        return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
     /**
