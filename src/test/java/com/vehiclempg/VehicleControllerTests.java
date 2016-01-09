@@ -275,5 +275,24 @@ public class VehicleControllerTests {
                 .body("size()", is(3))
                 .body("", hasItems("Acura", "BMW", "Ford"));
     }
+
+    @Test
+    public void testCompareMakes() {
+        when().
+                get("/vehicles/compare?makes=Acura,BMW").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("size()", is(2))
+                .body("make", hasItems("Acura", "BMW"));
+    }
+
+    @Test
+    public void testCompareMakesEmpty() {
+        when().
+                get("/vehicles/compare?makes=Bugatti").
+                then().
+                statusCode(HttpStatus.SC_NO_CONTENT);
+    }
 }
 

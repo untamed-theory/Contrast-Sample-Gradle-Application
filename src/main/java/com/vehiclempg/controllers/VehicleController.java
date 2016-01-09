@@ -185,6 +185,10 @@ public class VehicleController {
 
         List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);
 
+        if (vehicles.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
