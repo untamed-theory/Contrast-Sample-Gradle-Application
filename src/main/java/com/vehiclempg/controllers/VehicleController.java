@@ -1,11 +1,14 @@
 package com.vehiclempg.controllers;
 
 
+import com.vehiclempg.models.AverageStat;
 import com.vehiclempg.models.Vehicle;
 import com.vehiclempg.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @RestController
 @RequestMapping(value = "/vehicles", method = RequestMethod.GET)
@@ -181,7 +187,7 @@ public class VehicleController {
         List<String> splitMakes = Arrays.asList(makes.split(","));
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("make").in(splitMakes));
+        query.addCriteria(where("make").in(splitMakes));
 
         List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);
 
@@ -191,6 +197,42 @@ public class VehicleController {
 
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
+
+
+    /**
+     * Get average of mpg depending on make
+     *
+     * @return List of Vehicles
+     */
+    @RequestMapping(value = "/averages", method = RequestMethod.GET)
+    public ResponseEntity<List<AverageStat>> average(@RequestParam(value = "makes", required = false) String makes,
+                                                     @RequestParam(value = "type") String type) {
+        List<String> splitMakes;
+        Aggregation aggregation;
+
+        if (makes != null) {
+            splitMakes = Arrays.asList(makes.split(","));
+
+            aggregation = newAggregation(
+                    match(where("make").in(splitMakes)),
+                    group("make", "year").avg(type).as("average"),
+                    sort(Sort.Direction.DESC, "year"));
+        } else {
+            aggregation = newAggregation(
+                    group("make", "year").avg(type).as("average"),
+                    sort(Sort.Direction.DESC, "year"));
+        }
+
+        AggregationResults<AverageStat> groupResults = mongoTemplate.aggregate(aggregation, Vehicle.class, AverageStat.class);
+        List<AverageStat> averages = groupResults.getMappedResults();
+
+        if (averages.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(averages, HttpStatus.OK);
+    }
+
 
     /**
      * Filters the vehicles returned.
@@ -210,22 +252,22 @@ public class VehicleController {
 
         // filter on make
         if (make != null) {
-            query.addCriteria(Criteria.where("make").is(make));
+            query.addCriteria(where("make").is(make));
         }
 
         // filter on cylinders
         if (cylinders != null) {
-            query.addCriteria(Criteria.where("cylinders").is(cylinders));
+            query.addCriteria(where("cylinders").is(cylinders));
         }
 
         // filter on year(s)
         // Options: no years, 1 year, or both years
         if (fromYear != null && toYear != null) {
-            query.addCriteria(Criteria.where("year").gte(fromYear).andOperator(Criteria.where("year").lte(toYear)));
+            query.addCriteria(where("year").gte(fromYear).andOperator(where("year").lte(toYear)));
         } else if (fromYear != null) {
-            query.addCriteria(Criteria.where("year").gte(fromYear));
+            query.addCriteria(where("year").gte(fromYear));
         } else if (toYear != null) {
-            query.addCriteria(Criteria.where("year").lte(toYear));
+            query.addCriteria(where("year").lte(toYear));
         }
 
         List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);

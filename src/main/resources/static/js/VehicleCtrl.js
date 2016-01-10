@@ -6,6 +6,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
     $scope.info = {makes: [], selectedMPG: 'averageMPG', make: ''};
     $scope.alerts = [];
     $scope.compareMakes = [];
+    $scope.averages = [];
 
     // progress bar
     $scope.progressbar = ngProgressFactory.createInstance();
@@ -17,7 +18,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .then(
                 function (data) {
                     $scope.vehicles = data;
-                    $scope.createChart();
+                    $scope.createPlotChart();
 
                     $scope.progressbar.complete();
                 },
@@ -69,7 +70,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         d3.select("svg").remove();
 
         // repopulate data
-        $scope.createChart();
+        $scope.createPlotChart();
     };
 
     $scope.addMakeToCompare = function () {
@@ -92,7 +93,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                     d3.select("svg").remove();
 
                     // repopulate data
-                    $scope.createChart();
+                    $scope.createPlotChart();
                 },
                 function (err) {
                     console.error(err);
@@ -115,7 +116,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                     d3.select("svg").remove();
 
                     // repopulate data
-                    $scope.createChart();
+                    $scope.createPlotChart();
                 },
                 function (err) {
                     console.error(err);
@@ -137,7 +138,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                     // remove previous chart
                     d3.select("svg").remove();
 
-                    $scope.createChart();
+                    $scope.createPlotChart();
                 },
                 function (err) {
                     console.error(err);
@@ -145,7 +146,34 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             );
     };
 
-    $scope.createChart = function () {
+    $scope.getAverages = function () {
+        vehicle.getAverages($scope.info.selectedMPG, $scope.compareMakes)
+            .then(
+                function (data) {
+                    $scope.averages = data;
+
+                    // remove previous chart
+                    d3.select("#svg").remove();
+
+                    // repopulate data
+                    $scope.createAverageChart();
+                },
+                function (err) {
+                    console.error(err);
+                }
+            );
+
+    };
+
+    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+        if (e.target.hash === "#plot") {
+            $scope.createPlotChart();
+        } else if (e.target.hash === "#average") {
+            $scope.getAverages();
+        }
+    });
+
+    $scope.createPlotChart = function () {
         // Set the dimensions of the canvas / graph
         var margin = {top: 30, right: 30, bottom: 30, left: 30},
             width = 1000 - margin.left - margin.right,
@@ -166,7 +194,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .style("opacity", 0);
 
         // Adds the svg canvas
-        var svg = d3.select("#yearly-change-chart")
+        var svg = d3.select("#plot-chart")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -243,6 +271,74 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                 .attr("y", -15)
                 .attr("transform", "rotate(-90)")
                 .text("Miles per gallon");
+    };
+
+    $scope.createAverageChart = function () {
+        // Set the dimensions of the canvas / graph
+        var margin = {top: 30, right: 30, bottom: 30, left: 30},
+            width = 1000 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        // Set the ranges
+        var x = d3.scale.linear().range([0, width]);
+        var y = d3.scale.linear().range([height, 0]);
+
+        // Define the axes
+        var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format("d"));
+
+        var yAxis = d3.svg.axis().scale(y).ticks(10).orient("right");
+
+        // Adds the svg canvas
+        var svg = d3.select("#average-chart")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // Scale the range of the data
+        // pad 5 years on either side
+        x.domain([d3.min($scope.averages, function (d) {
+            return d.year;
+        }) - 5, d3.max($scope.averages, function (d) {
+            return d.year;
+        }) + 5]);
+
+        y.domain([0, d3.max($scope.averages, function (d) {
+            return d.average;
+        })]);
+
+        var line = d3.svg.line()
+            .x(function(d) { return x(d.year); })
+            .y(function(d) { return y(d.average); });
+
+        // Add the X Axis
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+            .append("text")
+                .attr("class", "label")
+                .attr("x", width - margin.right)
+                .attr("y", -10)
+                .style("text-anchor", "start")
+                .text("Year");
+
+        // Add the Y Axis
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+            .append("text")
+                .attr("class", "label")
+                .attr("x", -100)
+                .attr("y", -15)
+                .attr("transform", "rotate(-90)")
+                .text("Miles per gallon");
+
+        svg.append("path")
+            .datum($scope.averages)
+            .attr("class", "line")
+            .attr("d", line);
     };
 
     $scope.buildToolTip = function(v) {

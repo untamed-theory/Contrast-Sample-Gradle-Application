@@ -15,8 +15,6 @@ The data store is MongoDB since the data is easily stored as a document.
 When the app is first run, it checks to see if data is stored in Mongo from a previous install,
 else it loads the vehicle.csv and maps the columns to a Vehicle object that represents a MongoDB document.
 
-There are many other filters in the controllers like cylinders and city MPG but are not shown on the page.
-
 ## Dependencies
 * Mongo 3.2
 * Java 1.8
@@ -37,11 +35,11 @@ mvn test
 https://www.fueleconomy.gov/feg/download.shtml
 
 ## Resources
-https://spring.io/guides/tutorials/spring-security-and-angular-js/
-http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/
-http://g00glen00b.be/spring-boot-rest-assured/
-http://bl.ocks.org/weiglemc/6185069
-http://victorbjelkholm.github.io/ngProgress/
+* https://spring.io/guides/tutorials/spring-security-and-angular-js/
+* http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/
+* http://g00glen00b.be/spring-boot-rest-assured/
+* http://bl.ocks.org/weiglemc/6185069
+* http://victorbjelkholm.github.io/ngProgress/
 
 ## Future:
 - more charts

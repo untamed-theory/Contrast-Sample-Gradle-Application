@@ -25,6 +25,23 @@ angular.module('VehicleMPG').service('vehicle', function ($http, $q) {
                     }
                 );
         },
+        getAverages: function (type, makes) {
+            var url = '/vehicles/averages?type=' + type;
+
+            if (makes.length !== 0) {
+                url += '&makes=' + makes.join(",");
+            }
+
+            return $http.get(url)
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
         compareVehicleMakes: function (makes) {
             return $http.get('/vehicles/compare?makes=' + makes.join(','))
                 .then(

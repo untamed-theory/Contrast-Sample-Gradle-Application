@@ -139,24 +139,45 @@
     <!-- Analytics -->
     <div class="main">
         <h1 class="page-header text-center">Vehicle Miles Per Gallon Over Time</h1>
-        <!-- Chart -->
-        <div class="row">
-            <div id="yearly-change-chart">
-                <!-- chart -->
-            </div>
 
-            <div>
-                <h4>
-                    <strong>Legend</strong>
-                </h4>
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#plot" aria-controls="plot" role="tab" data-toggle="tab">Plot</a></li>
+            <li role="presentation"><a href="#average" aria-controls="average" role="tab" data-toggle="tab">Average</a></li>
+        </ul>
 
-                <ul>
-                    <li style="color: green;"> Greater than 30 Miles per Gallon</li>
-                    <li style="color: orange;"> Between 15 and 30 Miles per Gallon</li>
-                    <li style="color: red;"> Less than 10 Miles per Gallon</li>
-                </ul>
+        <div class="row tab-content">
+
+            <!-- Chart -->
+            <div class="tab-pane fade in active" role="tabpanel" id="plot">
+                <div id="plot-chart">
+
+                </div>
+
+                <div>
+                    <h4>
+                        <strong>Legend</strong>
+                    </h4>
+
+                    <ul>
+                        <li style="color: green;"> Greater than 30 Miles per Gallon</li>
+                        <li style="color: orange;"> Between 15 and 30 Miles per Gallon</li>
+                        <li style="color: red;"> Less than 10 Miles per Gallon</li>
+                    </ul>
+                </div>
             </div>
+            <!-- Chart -->
+
+            <!-- Average -->
+            <div class="tab-pane fade in active" role="tabpanel" id="average">
+                <div id="average-chart">
+
+                </div>
+            </div>
+            <!-- /Average -->
         </div>
+
+
         <!-- /Chart -->
     </div>
     <!-- /Analytics -->

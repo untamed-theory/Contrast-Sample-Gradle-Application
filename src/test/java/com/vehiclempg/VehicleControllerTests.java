@@ -294,5 +294,15 @@ public class VehicleControllerTests {
                 then().
                 statusCode(HttpStatus.SC_NO_CONTENT);
     }
+
+    @Test
+    public void testAverages() {
+        when().
+                get("/vehicles/averages?makes=Acura,BMW&type=averageMPG").
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .body("isEmpty()", is(false))
+                .body("size()", is(2));
+    }
 }
 
