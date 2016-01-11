@@ -7,7 +7,8 @@
 
     <title>Vehicle MPG Visualization</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css" type="text/css" media="screen"/>
 
 </head>
@@ -65,7 +66,8 @@
             <hr />
 
             <button class="btn btn-primary" ng-repeat="cm in compareMakes">
-                {{ cm }}
+                {{ cm }}&nbsp;
+                <span class="glyphicon glyphicon-remove" ng-click="removeMake(cm)"></span>
             </button>
         </div>
         <!-- /Compare makes -->
@@ -127,7 +129,8 @@
                         <hr />
 
                         <button class="btn btn-primary" ng-repeat="cm in compareMakes">
-                            {{ cm }}
+                            {{ cm }}&nbsp;
+                            <span class="glyphicon glyphicon-remove" ng-click="removeMake(cm)"></span>
                         </button>
                     </div>
                 </div>

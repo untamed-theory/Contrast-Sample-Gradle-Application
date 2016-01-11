@@ -83,6 +83,10 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         $scope.compareMakes = [];
     };
 
+    $scope.removeMake = function(make) {
+        $scope.compareMakes.splice(make, 1);
+    };
+
     $scope.compare = function () {
         vehicle.compareVehicleMakes($scope.compareMakes)
             .then(
