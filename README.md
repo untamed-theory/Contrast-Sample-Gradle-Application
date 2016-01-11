@@ -42,5 +42,5 @@ https://www.fueleconomy.gov/feg/download.shtml
 * http://victorbjelkholm.github.io/ngProgress/
 
 ## Future:
-- more charts
 - statistics on MPG
+- update average filter to use year and cylinders
