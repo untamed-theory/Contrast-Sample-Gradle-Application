@@ -2,7 +2,7 @@
 
 angular.module('VehicleMPG').controller('VehicleController', function ($scope, vehicle, ngProgressFactory) {
     $scope.vehicles = [];
-    $scope.filterForm = {fromYear: 1990, toYear: 2000, make: '', cylinders: null, displacement: null};
+    $scope.filterForm = {fromYear: '', toYear: '', make: '', cylinders: null, displacement: null};
     $scope.info = {makes: [], selectedMPG: 'averageMPG', make: ''};
     $scope.alerts = [];
     $scope.compareMakes = [];
@@ -151,7 +151,13 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
     };
 
     $scope.getAverages = function () {
-        vehicle.getAverages($scope.info.selectedMPG, $scope.compareMakes)
+        var makes = $scope.compareMakes;
+
+        if (makes.length === 0 && $scope.filterForm.make !== '') {
+            makes = [$scope.filterForm.make];
+        }
+
+        vehicle.getAverages($scope.info.selectedMPG, makes)
             .then(
                 function (data) {
                     $scope.averages = data;
