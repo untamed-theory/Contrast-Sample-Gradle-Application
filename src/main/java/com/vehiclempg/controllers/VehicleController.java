@@ -42,10 +42,7 @@ public class VehicleController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
 
-        List<Vehicle> vehicles = vehicleService.getAllVehicles()
-                .stream()
-                .limit(50)
-                .collect(Collectors.toList());
+        List<Vehicle> vehicles = vehicleService.getAllVehicles();
 
         // for testing purposes
         //        .stream()
