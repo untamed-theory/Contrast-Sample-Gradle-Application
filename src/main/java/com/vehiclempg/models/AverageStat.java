@@ -8,6 +8,13 @@ public class AverageStat {
 
     private int year;
 
+    /**
+     * Average stat class represents a result from Mongo Aggregation
+     *
+     * @param average computed average
+     * @param make    make of the vehicle
+     * @param year    year of the vehicle
+     */
     public AverageStat(String make, int year, float average) {
         this.average = average;
         this.make = make;

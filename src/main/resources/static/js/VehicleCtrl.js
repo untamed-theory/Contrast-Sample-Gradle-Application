@@ -67,7 +67,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         $scope.info.selectedMPG = type;
 
         // remove previous chart
-        d3.select("svg").remove();
+        d3.select("#plot-chart svg").remove();
 
         // repopulate data
         $scope.createPlotChart();
@@ -90,7 +90,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                     $scope.vehicles = data;
 
                     // remove previous chart
-                    d3.select("svg").remove();
+                    d3.select("#plot-chart svg").remove();
 
                     // repopulate data
                     $scope.createPlotChart();
@@ -113,7 +113,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                     $scope.vehicles = data;
 
                     // remove previous chart
-                    d3.select("svg").remove();
+                    d3.select("#plot-chart svg").remove();
 
                     // repopulate data
                     $scope.createPlotChart();
@@ -136,7 +136,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                     $scope.vehicles = data;
 
                     // remove previous chart
-                    d3.select("svg").remove();
+                    d3.select("#plot-chart svg").remove();
 
                     $scope.createPlotChart();
                 },
@@ -153,7 +153,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                     $scope.averages = data;
 
                     // remove previous chart
-                    d3.select("#svg").remove();
+                    d3.select("#average-chart svg").remove();
 
                     // repopulate data
                     $scope.createAverageChart();
@@ -165,8 +165,10 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
 
     };
 
+    // tab toggle
     $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
         if (e.target.hash === "#plot") {
+            d3.select("#plot-chart svg").remove();
             $scope.createPlotChart();
         } else if (e.target.hash === "#average") {
             $scope.getAverages();
@@ -296,6 +298,11 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        //  tooltip
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
         // Scale the range of the data
         // pad 5 years on either side
         x.domain([d3.min($scope.averages, function (d) {
@@ -308,9 +315,12 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             return d.average;
         })]);
 
-        var line = d3.svg.line()
-            .x(function(d) { return x(d.year); })
-            .y(function(d) { return y(d.average); });
+        // group by make
+        var group = d3.nest()
+            .key(function(d) {
+                return d.make;
+            })
+            .entries($scope.averages);
 
         // Add the X Axis
         svg.append("g")
@@ -335,10 +345,31 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
                 .attr("transform", "rotate(-90)")
                 .text("Miles per gallon");
 
-        svg.append("path")
-            .datum($scope.averages)
-            .attr("class", "line")
-            .attr("d", line);
+        // iterate over all groups and add a line for each make
+        group.forEach(function(d, i) {
+            var line = d3.svg.line()
+                .interpolate("basis")
+                .x(function(d) { return x(d.year); })
+                .y(function(d) { return y(d.average); });
+
+            svg.append('path')
+                .datum(d.values)
+                .attr('d', line)
+                .attr("class", "line")
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html("<Strong>Vehicle Make: </strong>" + d[0].make)
+                        .style("left", (d3.event.pageX + 10) + "px")
+                        .style("top", (d3.event.pageY) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+        });
     };
 
     $scope.buildToolTip = function(v) {

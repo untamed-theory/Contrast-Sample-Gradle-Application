@@ -59,7 +59,7 @@ angular.module('VehicleMPG').service('vehicle', function ($http, $q) {
             var options = [];
 
             if (form.make) {
-               options.push('make=' + form.make);
+                options.push('make=' + form.make);
             }
 
             if (form.cylinders) {

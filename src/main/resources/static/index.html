@@ -15,10 +15,11 @@
 <body data-ng-app="VehicleMPG">
 
 <div class="container-fluid" ng-controller="VehicleController">
-    <!-- Sidebar -->
+    <!-- Filter -->
     <div class="filter">
         <h1 class="page-header text-center">Filter</h1>
 
+        <!-- Form -->
         <form ng-submit="filter()">
             <div class="form-group">
                 <label for="make">Make:</label>
@@ -45,9 +46,11 @@
             </button>
             <button type="submit" class="btn btn-primary" style="float: right;">Filter</button>
         </form>
+        <!-- /Form -->
 
         <hr />
 
+        <!-- Compare makes -->
         <p>
             <strong>
                 Compare Vehicle Makes:
@@ -65,9 +68,11 @@
                 {{ cm }}
             </button>
         </div>
+        <!-- /Compare makes -->
 
         <hr />
 
+        <!-- Select MPG -->
         <p>
             <strong>Select MPG type:</strong>
         </p>
@@ -83,7 +88,9 @@
                 <input type="radio"> Highway MPG
             </label>
         </div>
+        <!-- /Select MPG -->
 
+        <!-- Alerts -->
         <div ng-show="alerts.length">
             <hr />
 
@@ -94,11 +101,10 @@
             <div class="alert alert-danger" ng-repeat="msg in alerts">
                 {{ msg }}
             </div>
-
         </div>
-
+        <!-- /Alerts -->
     </div>
-    <!-- /Sidebar-->
+    <!-- /Filter-->
 
     <!-- Modal -->
     <div class="modal fade" id="makesModal" tabindex="-1" role="dialog" aria-labelledby="makesModalLabel">
@@ -148,12 +154,13 @@
 
         <div class="row tab-content">
 
-            <!-- Chart -->
+            <!-- Plot tab-->
             <div class="tab-pane fade in active" role="tabpanel" id="plot">
                 <div id="plot-chart">
 
                 </div>
 
+                <!-- Legend -->
                 <div>
                     <h4>
                         <strong>Legend</strong>
@@ -165,16 +172,17 @@
                         <li style="color: red;"> Less than 10 Miles per Gallon</li>
                     </ul>
                 </div>
+                <!-- /Legend -->
             </div>
-            <!-- Chart -->
+            <!-- /Plot tab -->
 
-            <!-- Average -->
+            <!-- Average tab-->
             <div class="tab-pane fade in active" role="tabpanel" id="average">
                 <div id="average-chart">
 
                 </div>
             </div>
-            <!-- /Average -->
+            <!-- /Average tab-->
         </div>
 
 

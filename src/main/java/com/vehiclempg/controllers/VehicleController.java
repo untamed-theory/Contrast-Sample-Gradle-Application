@@ -202,17 +202,22 @@ public class VehicleController {
     /**
      * Get average of mpg depending on make
      *
+     * @param type  average to compute
+     * @param makes vehicle makes to filter on
      * @return List of Vehicles
      */
     @RequestMapping(value = "/averages", method = RequestMethod.GET)
-    public ResponseEntity<List<AverageStat>> average(@RequestParam(value = "makes", required = false) String makes,
-                                                     @RequestParam(value = "type") String type) {
+    public ResponseEntity<List<AverageStat>> average(@RequestParam(value = "type") String type,
+                                                     @RequestParam(value = "makes", required = false) String makes) {
         List<String> splitMakes;
         Aggregation aggregation;
 
+        // filter if makes are passing in
         if (makes != null) {
             splitMakes = Arrays.asList(makes.split(","));
 
+            // filter on make in request, group by make and year
+            // compute average based on mpg type, sort by year descending
             aggregation = newAggregation(
                     match(where("make").in(splitMakes)),
                     group("make", "year").avg(type).as("average"),
@@ -223,7 +228,9 @@ public class VehicleController {
                     sort(Sort.Direction.DESC, "year"));
         }
 
+        // run aggregation
         AggregationResults<AverageStat> groupResults = mongoTemplate.aggregate(aggregation, Vehicle.class, AverageStat.class);
+        // convert mongo results to list
         List<AverageStat> averages = groupResults.getMappedResults();
 
         if (averages.isEmpty()) {
