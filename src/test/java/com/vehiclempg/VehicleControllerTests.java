@@ -277,25 +277,6 @@ public class VehicleControllerTests {
     }
 
     @Test
-    public void testCompareMakes() {
-        when().
-                get("/vehicles/compare?makes=Acura,BMW").
-                then().
-                statusCode(HttpStatus.SC_OK)
-                .body("isEmpty()", is(false))
-                .body("size()", is(2))
-                .body("make", hasItems("Acura", "BMW"));
-    }
-
-    @Test
-    public void testCompareMakesEmpty() {
-        when().
-                get("/vehicles/compare?makes=Bugatti").
-                then().
-                statusCode(HttpStatus.SC_NO_CONTENT);
-    }
-
-    @Test
     public void testAverages() {
         when().
                 get("/vehicles/averages?makes=Acura,BMW&type=averageMPG").

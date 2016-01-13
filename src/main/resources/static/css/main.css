@@ -21,6 +21,10 @@ body {
     margin-top: 0;
 }
 
+.make-btn {
+    margin: 10px;
+}
+
 /*
  * Main content
  */
@@ -40,14 +44,6 @@ body {
 
 .main .page-header {
     margin-top: 0;
-}
-
-/*
- * Modal
- */
-
-.compare-makes button {
-    margin: 7px;
 }
 
 /*

@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -174,29 +175,6 @@ public class VehicleController {
     }
 
     /**
-     * Filter based on multiple makes.
-     *
-     * @return List of Vehicles
-     */
-    @RequestMapping(value = "/compare", method = RequestMethod.GET)
-    public ResponseEntity<List<Vehicle>> compareVehicleMakes(@RequestParam(value = "makes") String makes) {
-
-        List<String> splitMakes = Arrays.asList(makes.split(","));
-
-        Query query = new Query();
-        query.addCriteria(where("make").in(splitMakes));
-
-        List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);
-
-        if (vehicles.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(vehicles, HttpStatus.OK);
-    }
-
-
-    /**
      * Get average of mpg depending on make
      *
      * @param type  average to compute
@@ -241,22 +219,30 @@ public class VehicleController {
     /**
      * Filters the vehicles returned.
      *
-     * @param make     Vehicle make
-     * @param fromYear Beginning year to filter on
-     * @param toYear   End year to filter on
+     * @param makes     Selected Vehicle makes
+     * @param fromYear  Beginning year to filter on
+     * @param toYear    End year to filter on
+     * @param cylinders cylinders to filter on
+     * @param mpg       type of mpg to filter on
      * @return List of filtered Vehicles
      */
-    @RequestMapping(value = "/filter", method = RequestMethod.GET)
-    public ResponseEntity<List<Vehicle>> filter(@RequestParam(value = "make", required = false) String make,
-                                                @RequestParam(value = "cylinders", required = false) Integer cylinders,
-                                                @RequestParam(value = "from", required = false) Integer fromYear,
-                                                @RequestParam(value = "to", required = false) Integer toYear) {
+    @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<Map<String, ?>> filter(@RequestParam(value = "makes", required = false) String makes,
+                                                 @RequestParam(value = "cylinders", required = false) Integer cylinders,
+                                                 @RequestParam(value = "from", required = false) Integer fromYear,
+                                                 @RequestParam(value = "to", required = false) Integer toYear,
+                                                 @RequestParam(value = "mpg") String mpg) {
+        // json return value
+        Map<String, List<?>> json = new HashMap<>();
+        List<String> splitMakes = null;
+
         // Empty Query
         Query query = new Query();
 
-        // filter on make
-        if (make != null) {
-            query.addCriteria(where("make").is(make));
+        // filter on makes
+        if (makes != null) {
+            splitMakes = Arrays.asList(makes.split(","));
+            query.addCriteria(where("make").in(splitMakes));
         }
 
         // filter on cylinders
@@ -274,12 +260,36 @@ public class VehicleController {
             query.addCriteria(where("year").lte(toYear));
         }
 
-        List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);
+        // add vehicles
+        json.put("vehicles", mongoTemplate.find(query, Vehicle.class));
 
-        if (vehicles.isEmpty()) {
+        // get averages -------------------------------------------------------------------------------------
+        Aggregation aggregation;
+
+        // filter if makes are passing in
+        if (makes != null) {
+            // filter on make in request, group by make and year
+            // compute average based on mpg type, sort by year descending
+            aggregation = newAggregation(
+                    match(where("make").in(splitMakes)),
+                    group("make", "year").avg(mpg).as("average"),
+                    sort(Sort.Direction.DESC, "year"));
+        } else {
+            aggregation = newAggregation(
+                    group("make", "year").avg(mpg).as("average"),
+                    sort(Sort.Direction.DESC, "year"));
+        }
+
+        // run aggregation
+        AggregationResults<AverageStat> groupResults = mongoTemplate.aggregate(aggregation, Vehicle.class, AverageStat.class);
+
+        // convert mongo results to list
+        json.put("averages", groupResults.getMappedResults());
+
+        if (json.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(vehicles, HttpStatus.OK);
+        return new ResponseEntity<>(json, HttpStatus.OK);
     }
 }

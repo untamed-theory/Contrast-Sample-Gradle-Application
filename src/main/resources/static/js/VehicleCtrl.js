@@ -2,10 +2,9 @@
 
 angular.module('VehicleMPG').controller('VehicleController', function ($scope, vehicle, ngProgressFactory) {
     $scope.vehicles = [];
-    $scope.filterForm = {fromYear: '', toYear: '', make: '', cylinders: null, displacement: null};
-    $scope.info = {makes: [], selectedMPG: 'averageMPG', make: ''};
+    $scope.filterForm = {fromYear: '', toYear: '', makes: [], cylinders: null, displacement: null};
+    $scope.info = {makes: [], selectedMPG: 'averageMPG', selectMake: ''};
     $scope.alerts = [];
-    $scope.compareMakes = [];
     $scope.averages = [];
 
     // progress bar
@@ -73,36 +72,21 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
         $scope.createPlotChart();
     };
 
-    $scope.addMakeToCompare = function () {
-        if ($scope.compareMakes.indexOf($scope.info.make) === -1) {
-            $scope.compareMakes.push($scope.info.make);
+    $scope.addMake = function () {
+        if ($scope.filterForm.makes.indexOf($scope.info.selectMake) === -1) {
+            $scope.filterForm.makes.push($scope.info.selectMake);
         }
+        $scope.info.selectMake = '';
     };
 
-    $scope.clearCompareMakes = function () {
-        $scope.compareMakes = [];
+    $scope.clearMakes = function () {
+        $scope.filterForm.makes = [];
+        $scope.info.selectMake = '';
     };
 
     $scope.removeMake = function(make) {
-        $scope.compareMakes.splice(make, 1);
-    };
-
-    $scope.compare = function () {
-        vehicle.compareVehicleMakes($scope.compareMakes)
-            .then(
-                function (data) {
-                    $scope.vehicles = data;
-
-                    // remove previous chart
-                    d3.select("#plot-chart svg").remove();
-
-                    // repopulate data
-                    $scope.createPlotChart();
-                },
-                function (err) {
-                    console.error(err);
-                }
-            );
+        $scope.filterForm.makes.splice(make, 1);
+        $scope.info.selectMake = '';
     };
 
     $scope.filter = function () {
@@ -111,16 +95,21 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
             return;
         }
 
-        vehicle.filter($scope.filterForm)
+        vehicle.filter($scope.filterForm, $scope.info.selectedMPG)
             .then(
                 function (data) {
-                    $scope.vehicles = data;
+                    $scope.vehicles = data.vehicles;
+                    $scope.averages = data.averages;
 
                     // remove previous chart
                     d3.select("#plot-chart svg").remove();
+                    // remove previous chart
+                    d3.select("#average-chart svg").remove();
 
                     // repopulate data
                     $scope.createPlotChart();
+                    // repopulate data
+                    $scope.createAverageChart();
                 },
                 function (err) {
                     console.error(err);
@@ -130,9 +119,8 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
     };
 
     $scope.clear = function () {
-        $scope.filterForm = {fromYear: null, toYear: null, make: null, cylinders: null, displacement: null};
+        $scope.filterForm = {fromYear: null, toYear: null, makes: [], cylinders: null, displacement: null};
         $scope.vehicles = [];
-        $scope.compareMakes = [];
 
         vehicle.getAllVehicles()
             .then(
@@ -151,13 +139,7 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
     };
 
     $scope.getAverages = function () {
-        var makes = $scope.compareMakes;
-
-        if (makes.length === 0 && $scope.filterForm.make !== '') {
-            makes = [$scope.filterForm.make];
-        }
-
-        vehicle.getAverages($scope.info.selectedMPG, makes)
+        vehicle.getAverages($scope.info.selectedMPG, $scope.form.makes)
             .then(
                 function (data) {
                     $scope.averages = data;
@@ -178,10 +160,10 @@ angular.module('VehicleMPG').controller('VehicleController', function ($scope, v
     // tab toggle
     $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
         if (e.target.hash === "#plot") {
-            d3.select("#plot-chart svg").remove();
-            $scope.createPlotChart();
+            //d3.select("#plot-chart svg").remove();
+            //$scope.createPlotChart();
         } else if (e.target.hash === "#average") {
-            $scope.getAverages();
+            //$scope.getAverages();
         }
     });
 

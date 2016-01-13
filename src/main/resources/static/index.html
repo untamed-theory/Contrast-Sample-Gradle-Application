@@ -23,12 +23,23 @@
         <!-- Form -->
         <form ng-submit="filter()">
             <div class="form-group">
-                <label for="make">Make:</label>
-                <select class="form-control" id="make" ng-model="filterForm.make">
-                    <option ng-repeat="make in info.makes | orderBy:'toString()'" value="{{make}}">
-                        {{make}}
-                    </option>
-                </select>
+                <!-- Select makes -->
+                <p><strong>Makes:</strong></p>
+
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#makesModal">
+                    Select makes
+                </button>
+
+                <!-- selected makes -->
+                <div ng-show="filterForm.makes.length">
+                    <button class="btn btn-primary make-btn" ng-repeat="cm in filterForm.makes">
+                        {{ cm }}&nbsp;
+                        <span class="glyphicon glyphicon-remove" ng-click="removeMake(cm)"></span>
+                    </button>
+                </div>
+                <!-- /selected makes -->
+
+                <!-- /Select makes -->
             </div>
             <div class="form-group">
                 <label for="cylinders">Cylinders:</label>
@@ -48,34 +59,6 @@
             <button type="submit" class="btn btn-primary" style="float: right;">Filter</button>
         </form>
         <!-- /Form -->
-
-        <hr />
-
-        <!-- Compare makes -->
-        <p>
-            <strong>
-                Compare Vehicle Makes:
-            </strong>
-        </p>
-
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#makesModal">
-            Select makes
-        </button>
-
-        <button type="button" class="btn btn-primary" style="float: right;" ng-click="compare()">
-            Compare
-        </button>
-
-
-        <div ng-show="compareMakes.length" class="compare-makes">
-            <hr />
-
-            <button class="btn btn-primary" ng-repeat="cm in compareMakes">
-                {{ cm }}&nbsp;
-                <span class="glyphicon glyphicon-remove" ng-click="removeMake(cm)"></span>
-            </button>
-        </div>
-        <!-- /Compare makes -->
 
         <hr />
 
@@ -119,21 +102,21 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="makesModalLabel">Compare Vehicle Makes</h4>
+                    <h4 class="modal-title" id="makesModalLabel">Select Vehicle Makes</h4>
                 </div>
 
                 <div class="modal-body">
-                    <label for="compareMake">Select Makes:</label>
-                    <select class="form-control" id="compareMake" ng-model="info.make" ng-change="addMakeToCompare()">
+                    <p><strong>Makes:</strong></p>
+                    <select class="form-control" ng-model="info.selectMake" ng-change="addMake()">
                         <option ng-repeat="make in info.makes | orderBy:'toString()'" value="{{make}}">
                             {{make}}
                         </option>
                     </select>
 
-                    <div ng-show="compareMakes.length" class="compare-makes">
+                    <div ng-show="filterForm.makes.length">
                         <hr />
 
-                        <button class="btn btn-primary" ng-repeat="cm in compareMakes">
+                        <button class="btn btn-primary make-btn" ng-repeat="cm in filterForm.makes">
                             {{ cm }}&nbsp;
                             <span class="glyphicon glyphicon-remove" ng-click="removeMake(cm)"></span>
                         </button>
@@ -141,7 +124,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" style="float: left;" ng-click="clearCompareMakes()">Clear</button>
+                    <button type="button" class="btn btn-default" style="float: left;" ng-click="clearMakes()">Clear</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
