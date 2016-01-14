@@ -1,8 +1,6 @@
 # Vehicle MPG Web Application
 Author: Justin Leo
 
-For Contrast Security Assignment
-
 This web application shows a brief chart of vehicle average miles per gallon over recent history.
 It also allows you to filter on basic principles like year and make to narrow down the results.
 
