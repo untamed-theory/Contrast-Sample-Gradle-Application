@@ -45,9 +45,6 @@ dependencies {
     testCompile("junit:junit")
 }
 
-task execMaven(type: Exec) << {
-    commandLine 'mvn', 'clean spring-boot:run'
-}
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version:'1.3.1.RELEASE'
@@ -74,7 +71,7 @@ contrastConfiguration {
     serviceKey = "demo"
     apiUrl = "http://localhost:19080/Contrast/api"
     orgUuid = "632AAF07-557E-4B26-99A0-89F85D1748DB"
-    appName = "Vehicle MPG Webapp"
+    appName = "gradleapp"
     serverName = "ip-192-168-1-50.ec2.internal"
     minSeverity = "Medium"
 }
