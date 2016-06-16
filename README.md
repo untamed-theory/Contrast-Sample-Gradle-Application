@@ -21,7 +21,7 @@ Then go to http://localhost:8080/
 1. gradle build contrastInstall
 
 ## Onboard with TeamServer
-1. java -javaagent:build/contrast.jar -Dcontrast.appname=mytestapp -Dcontrast.server=mytestserver -jar build/libs/Contrast-Sample-Gradle-Application-0.0.1-SNAPSHOT.jar
+1. `java -javaagent:build/contrast.jar -Dcontrast.appname=mytestapp -Dcontrast.server=mytestserver -jar build/libs/Contrast-Sample-Gradle-Application-0.0.1-SNAPSHOT.jar`
 The application will now show up on your TeamServer
 
 ## Verify with Contrast Agent
