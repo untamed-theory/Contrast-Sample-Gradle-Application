@@ -198,6 +198,7 @@ public class VehicleControllerTests {
                 statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
+    /*
     @Test
     public void testFilterWithAll() {
 
@@ -263,7 +264,7 @@ public class VehicleControllerTests {
                 then().
                 statusCode(HttpStatus.SC_NO_CONTENT);
     }
-
+     */
     @Test
     public void testGetMakes() {
 

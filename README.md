@@ -17,17 +17,29 @@ else it loads the vehicle.csv and maps the columns to a Vehicle object that repr
 * Mongo 3.2
 * Java 1.8
 * Maven 3.3.9
+* Contrast Java SDK(Installed in local maven repo)
+
+**Note:** you must configure the correct contrastConfiguration settings within the build.gradle file in this project.
 
 ## To run the application
 1. Start MongoDB with mongod See: https://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/
-2. mvn clean spring-boot:run
+2. gradle build bootRun
 
-Note: Spring takes care of the database creation and assumes localhost:27017 for location
-
+**Note:** Spring takes care of the database creation and assumes localhost:27017 for location
 Then go to http://localhost:8080/
 
+## Install Contrast Agent
+1. gradle contrastInstall
+
+## Verify with Contrast Agent
+1. gradle build contrastVerify
+
+##Run with Contrast
+1. gradle build contrastInstall contrastVerify
+
+
 ## To run the tests
-mvn test
+gradle test
 
 ## CSV Resource
 https://www.fueleconomy.gov/feg/download.shtml
