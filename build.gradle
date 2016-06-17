@@ -62,15 +62,15 @@ dependencies {
 }
 
 
-apply plugin: 'contrastplugin'
+apply plugin: 'com.contrastsecurity.contrastplugin'
 
 
 contrastConfiguration {
-    username = "usernameHere"
-    apiKey = "apiKeyHere"
-    serviceKey = "serviceKeyHere"
+    username = "contrast_admin"
+    apiKey = "demo"
+    serviceKey = "demo"
     apiUrl = "http://localhost:19080/Contrast/api"
-    orgUuid = "12345678-1234-1234-1234-123456789ABC"
+    orgUuid = "8E85C35F-46A7-45BC-8C66-1E78F8BB4B76"
     appName = "appNameHere"
     serverName = "serverNameHere"
     minSeverity = "Medium"
