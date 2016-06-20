@@ -5,8 +5,6 @@ It also allows you to filter on basic principles like year and make to narrow do
 ## Dependencies
 * Mongo 3.2
 * Java 1.8
-* Maven 3.3.9
-* Contrast Java SDK(Installed in local maven repo)
 
 **Note:** you must configure the contrastConfiguration settings from your TeamServer within the build.gradle file in this project.
 
@@ -18,18 +16,18 @@ It also allows you to filter on basic principles like year and make to narrow do
 Then go to http://localhost:8080/
 
 ## Install Contrast Agent
-1. gradle build contrastInstall
+1. `gradle build contrastInstall`
 
 ## Onboard with TeamServer
 1. `java -javaagent:build/contrast.jar -Dcontrast.appname=mytestapp -Dcontrast.server=mytestserver -jar build/libs/Contrast-Sample-Gradle-Application-0.0.1-SNAPSHOT.jar`
 The application will now show up on your TeamServer
 
 ## Verify with Contrast Agent
-1. gradle build contrastVerify
+1. `gradle build contrastVerify`
 
 
 ## To run the tests
-gradle test
+`gradle test`
 
 ## CSV Resource
 https://www.fueleconomy.gov/feg/download.shtml
