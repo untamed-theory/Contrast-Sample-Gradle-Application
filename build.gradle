@@ -76,12 +76,12 @@ apply plugin: 'com.contrastsecurity.contrastplugin'
 
 
 contrastConfiguration {
-    username = "contrast_admin"
-    apiKey = "demo"
-    serviceKey = "demo"
-    apiUrl = "http://localhost:19080/Contrast/api"
-    orgUuid = "F0EEFAD6-13F7-44F1-B822-5AEC4182642D"
-    appName = "mytestapp"
-    serverName = "mytestserver"
+    username = "username"
+    apiKey = "asdf"
+    serviceKey = "asdf"
+    apiUrl = "http://localhost:19080/Contrast/api" 
+    orgUuid = "1234-1234-1234-1234"
+    appName = "appNameHere"
+    serverName = "serverNameHere"
     minSeverity = "Medium"
 }
