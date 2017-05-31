@@ -26,7 +26,8 @@ buildscript {
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.5.RELEASE")
-        classpath "gradle.plugin.com.contrastsecurity:ContrastGradlePlugin:1.0-SNAPSHOT"
+        classpath "gradle.plugin.com.contrastsecurity:ContrastGradlePlugin:1.1.1"
+        classpath "io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE"
     }
 }
 
@@ -78,12 +79,9 @@ contrastConfiguration {
     username = "username"
     apiKey = "asdf"
     serviceKey = "asdf"
-    apiUrl = "http://localhost:19080/Contrast/api"
+    apiUrl = "http://localhost:19080/Contrast/api" 
     orgUuid = "1234-1234-1234-1234"
     appName = "appNameHere"
     serverName = "serverNameHere"
     minSeverity = "Medium"
 }
-
-
-
