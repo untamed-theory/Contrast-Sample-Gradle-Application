@@ -3,7 +3,7 @@ This web application shows a brief chart of vehicle average miles per gallon ove
 It also allows you to filter on basic principles like year and make to narrow down the results.
 
 ## Dependencies
-* Mongo 3.2
+* Mongo < 3.6. The current version of spring-data-mongodb (2.0.X) is incompatible with Mongo 3.6 and beyond.
 * Java 1.8
 
 **Note:** you must configure the contrastConfiguration settings from your TeamServer within the build.gradle file in this project.
