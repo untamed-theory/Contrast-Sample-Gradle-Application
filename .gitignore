@@ -33,3 +33,5 @@ build/*
 ##Gradle
 .gradle/*
 .idea/
+
+.DS_Store

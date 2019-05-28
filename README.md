@@ -6,7 +6,7 @@ It also allows you to filter on basic principles like year and make to narrow do
 * Mongo < 3.6. The current version of spring-data-mongodb (2.0.X) is incompatible with Mongo 3.6 and beyond.
 * Java 1.8
 
-**Note:** you must configure the contrastConfiguration settings from your TeamServer within the build.gradle file in this project.
+**Note:** you must configure the contrastConfiguration settings from the Contrast UI (under Your Account) within the build.gradle file in this project.
 
 ## To run the application
 1. Start MongoDB with mongod See: https://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/
@@ -18,9 +18,9 @@ Then go to http://localhost:8080/
 ## Install Contrast Agent
 1. `gradle build contrastInstall`
 
-## Onboard with TeamServer
+## Onboard with Contrast
 1. `java -javaagent:build/contrast.jar -Dcontrast.appname=mytestapp -Dcontrast.server=mytestserver -jar build/libs/Contrast-Sample-Gradle-Application-0.0.1-SNAPSHOT.jar`
-The application will now show up on your TeamServer
+The application will now show up in the Applications tab of the Contrast UI
 
 ## Verify with Contrast Agent
 1. `gradle build contrastVerify`
