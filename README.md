@@ -18,9 +18,9 @@ Then go to http://localhost:8080/
 ## Install Contrast Agent
 1. `gradle build contrastInstall`
 
-<<<<<<< HEAD
 ## Onboard with Contrast
-1. `java -jar build/libs/Contrast-Sample-Gradle-Application-0.0.1-SNAPSHOT.jar`
+1. `java -javaagent:build/contrast.jar -Dcontrast.appname=mytestapp -Dcontrast.server=mytestserver -jar build/libs/Contrast-Sample-Gradle-Application-0.0.1-SNAPSHOT.jar`
+
 The application will now show up in the Applications tab of the Contrast UI
 
 ## Verify with Contrast Agent
